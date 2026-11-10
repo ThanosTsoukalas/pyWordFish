@@ -52,20 +52,23 @@ def predictNextWordCluster(prev:str, size:float, cluster_type:str, temp:float):
     # "academic"    - sentence contains 20 to 25 words
 
     if cluster_type == "average":
-        num_of_generated_words = int((random.randint(15, 20) * (size + 0.7))(random.randint(100, 120)/100))
+        num_of_generated_words = int((random.randint(15, 20) * (size + 0.7))*(random.randint(100, 120)/100))
     elif cluster_type == "short":
-        num_of_generated_words = int((random.randint(12, 15) * (size + 0.7))(random.randint(100, 120)/100))
+        num_of_generated_words = int((random.randint(12, 15) * (size + 0.7))*(random.randint(100, 120)/100))
     elif cluster_type == "academic":
-        num_of_generated_words = int((random.randint(20, 25) * (size + 0.7))(random.randint(100, 120)/100))
+        num_of_generated_words = int((random.randint(20, 25) * (size + 0.7))*(random.randint(100, 120)/100))
     else:
         raise ValueError
 
-    temp_string = ""
-    for i in range (num_of_generated_words):
-        temp_string = temp_string + predictNextWord(prev, temp)
-        if i == num_of_generated_words:
-            temp_string = temp_string + "."
-    
+    temp_string = prev.title() + ' '
+    previous = prev
+    for i in range(num_of_generated_words):
+        curr = predictNextWord(previous, temp)
+        temp_string = temp_string + curr.lower() + ' '
+        previous = curr
+        if i == num_of_generated_words - 1:
+            temp_string = temp_string[:-1] + "."
+    return temp_string
 
     
 
@@ -79,12 +82,7 @@ def predictNextWordCluster(prev:str, size:float, cluster_type:str, temp:float):
 # understand a prompt
 
 
-print(count)
-previous = words[0]
-print(previous, end = ' ')
-for i in range(500):
-    prediction = predictNextWord(previous, 0.6)
-    if prediction == ending:
-        prediction = words[0]
-    print(prediction, end = ' ')
-    previous = prediction
+# print(count)
+
+for i in range(5):
+    print(predictNextWordCluster('The', 0.75, 'average', 0.75))
