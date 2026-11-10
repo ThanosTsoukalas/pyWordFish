@@ -95,4 +95,4 @@ def predictNextWordCluster(prev:str, size:float, cluster_type:str, temp:float):
 # print(count)
 
 for i in range(5):
-    print(predictNextWordCluster('The', 0.75, 'average', 0.75))
+    print(predictNextWordCluster('The', 0.2, 'average', 0.6))
