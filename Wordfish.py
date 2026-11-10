@@ -9,9 +9,15 @@ training_text = trainingfile.read()
 trainingfile.close()
 
 count = defaultdict(dict)
-ending = '~END~'
+ending = '■END■'
+number_period = '■NUM_PERIOD■'
+comma = '■COMMA■'
 
 for c in string.punctuation:
+    if c == ",":
+        training_text = training_text.replace(c, comma)
+    if c == ".":
+            training_text = training_text.replace(c, ending)
     training_text = training_text.replace(c, '')
 
 words = training_text.split()
@@ -62,16 +68,20 @@ def predictNextWordCluster(prev:str, size:float, cluster_type:str, temp:float):
 
     temp_string = prev.title() + ' '
     previous = prev
+
     for i in range(num_of_generated_words):
         curr = predictNextWord(previous, temp)
         temp_string = temp_string + curr.lower() + ' '
         previous = curr
         if i == num_of_generated_words - 1:
             temp_string = temp_string[:-1] + "."
+
+    if temp_string.split()[-1][:-1] in ["and", "or", "the"]:
+        temp_string.replace(temp_string.split()[-1][:-1], "")
+
+    temp_string = temp_string.replace('■end■', ".")
+    temp_string = temp_string.replace('■comma■', ",")
     return temp_string
-
-    
-
 
 # make contextual paragraphs
 
